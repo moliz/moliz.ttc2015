@@ -1098,15 +1098,6 @@ public class ActivitydiagramPackageImpl extends EPackageImpl implements Activity
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getForkedToken_BaseTokenIsWithdrawn() {
-		return (EAttribute)forkedTokenEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EEnum getIntegerCalculationOperator() {
 		return integerCalculationOperatorEEnum;
 	}
@@ -1278,7 +1269,6 @@ public class ActivitydiagramPackageImpl extends EPackageImpl implements Activity
 		forkedTokenEClass = createEClass(FORKED_TOKEN);
 		createEReference(forkedTokenEClass, FORKED_TOKEN__BASE_TOKEN);
 		createEAttribute(forkedTokenEClass, FORKED_TOKEN__REMAINING_OFFERS_COUNT);
-		createEAttribute(forkedTokenEClass, FORKED_TOKEN__BASE_TOKEN_IS_WITHDRAWN);
 
 		// Create enums
 		integerCalculationOperatorEEnum = createEEnum(INTEGER_CALCULATION_OPERATOR);
@@ -1456,7 +1446,6 @@ public class ActivitydiagramPackageImpl extends EPackageImpl implements Activity
 		initEClass(forkedTokenEClass, ForkedToken.class, "ForkedToken", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getForkedToken_BaseToken(), this.getToken(), null, "baseToken", null, 1, 1, ForkedToken.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getForkedToken_RemainingOffersCount(), ecorePackage.getEInt(), "remainingOffersCount", null, 1, 1, ForkedToken.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getForkedToken_BaseTokenIsWithdrawn(), ecorePackage.getEBoolean(), "baseTokenIsWithdrawn", null, 1, 1, ForkedToken.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(integerCalculationOperatorEEnum, IntegerCalculationOperator.class, "IntegerCalculationOperator");

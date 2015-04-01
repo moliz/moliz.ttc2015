@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link activitydiagram.impl.ForkedTokenImpl#getBaseToken <em>Base Token</em>}</li>
  *   <li>{@link activitydiagram.impl.ForkedTokenImpl#getRemainingOffersCount <em>Remaining Offers Count</em>}</li>
- *   <li>{@link activitydiagram.impl.ForkedTokenImpl#isBaseTokenIsWithdrawn <em>Base Token Is Withdrawn</em>}</li>
  * </ul>
  * </p>
  *
@@ -56,26 +55,6 @@ public class ForkedTokenImpl extends TokenImpl implements ForkedToken {
 	 * @ordered
 	 */
 	protected int remainingOffersCount = REMAINING_OFFERS_COUNT_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #isBaseTokenIsWithdrawn() <em>Base Token Is Withdrawn</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isBaseTokenIsWithdrawn()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean BASE_TOKEN_IS_WITHDRAWN_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isBaseTokenIsWithdrawn() <em>Base Token Is Withdrawn</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isBaseTokenIsWithdrawn()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean baseTokenIsWithdrawn = BASE_TOKEN_IS_WITHDRAWN_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -160,27 +139,6 @@ public class ForkedTokenImpl extends TokenImpl implements ForkedToken {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isBaseTokenIsWithdrawn() {
-		return baseTokenIsWithdrawn;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setBaseTokenIsWithdrawn(boolean newBaseTokenIsWithdrawn) {
-		boolean oldBaseTokenIsWithdrawn = baseTokenIsWithdrawn;
-		baseTokenIsWithdrawn = newBaseTokenIsWithdrawn;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ActivitydiagramPackage.FORKED_TOKEN__BASE_TOKEN_IS_WITHDRAWN, oldBaseTokenIsWithdrawn, baseTokenIsWithdrawn));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -189,8 +147,6 @@ public class ForkedTokenImpl extends TokenImpl implements ForkedToken {
 				return basicGetBaseToken();
 			case ActivitydiagramPackage.FORKED_TOKEN__REMAINING_OFFERS_COUNT:
 				return getRemainingOffersCount();
-			case ActivitydiagramPackage.FORKED_TOKEN__BASE_TOKEN_IS_WITHDRAWN:
-				return isBaseTokenIsWithdrawn();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -208,9 +164,6 @@ public class ForkedTokenImpl extends TokenImpl implements ForkedToken {
 				return;
 			case ActivitydiagramPackage.FORKED_TOKEN__REMAINING_OFFERS_COUNT:
 				setRemainingOffersCount((Integer)newValue);
-				return;
-			case ActivitydiagramPackage.FORKED_TOKEN__BASE_TOKEN_IS_WITHDRAWN:
-				setBaseTokenIsWithdrawn((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -230,9 +183,6 @@ public class ForkedTokenImpl extends TokenImpl implements ForkedToken {
 			case ActivitydiagramPackage.FORKED_TOKEN__REMAINING_OFFERS_COUNT:
 				setRemainingOffersCount(REMAINING_OFFERS_COUNT_EDEFAULT);
 				return;
-			case ActivitydiagramPackage.FORKED_TOKEN__BASE_TOKEN_IS_WITHDRAWN:
-				setBaseTokenIsWithdrawn(BASE_TOKEN_IS_WITHDRAWN_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -249,8 +199,6 @@ public class ForkedTokenImpl extends TokenImpl implements ForkedToken {
 				return baseToken != null;
 			case ActivitydiagramPackage.FORKED_TOKEN__REMAINING_OFFERS_COUNT:
 				return remainingOffersCount != REMAINING_OFFERS_COUNT_EDEFAULT;
-			case ActivitydiagramPackage.FORKED_TOKEN__BASE_TOKEN_IS_WITHDRAWN:
-				return baseTokenIsWithdrawn != BASE_TOKEN_IS_WITHDRAWN_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -267,8 +215,6 @@ public class ForkedTokenImpl extends TokenImpl implements ForkedToken {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (remainingOffersCount: ");
 		result.append(remainingOffersCount);
-		result.append(", baseTokenIsWithdrawn: ");
-		result.append(baseTokenIsWithdrawn);
 		result.append(')');
 		return result.toString();
 	}
@@ -278,9 +224,8 @@ public class ForkedTokenImpl extends TokenImpl implements ForkedToken {
 	 */
 	@Override
 	public void withdraw() {
-		if(!baseTokenIsWithdrawn && !getBaseToken().isWithdrawn()) {
+		if(!getBaseToken().isWithdrawn()) {
 			getBaseToken().withdraw();
-			baseTokenIsWithdrawn = true;
 		}
 		if(remainingOffersCount > 0) {
 			--remainingOffersCount;

@@ -150,7 +150,5 @@
         eType="#//Token"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="remainingOffersCount" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="baseTokenIsWithdrawn" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -2200,22 +2200,13 @@ public interface ActivitydiagramPackage extends EPackage {
 	int FORKED_TOKEN__REMAINING_OFFERS_COUNT = TOKEN_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Base Token Is Withdrawn</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FORKED_TOKEN__BASE_TOKEN_IS_WITHDRAWN = TOKEN_FEATURE_COUNT + 2;
-
-	/**
 	 * The number of structural features of the '<em>Forked Token</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FORKED_TOKEN_FEATURE_COUNT = TOKEN_FEATURE_COUNT + 3;
+	int FORKED_TOKEN_FEATURE_COUNT = TOKEN_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Forked Token</em>' class.
@@ -3079,17 +3070,6 @@ public interface ActivitydiagramPackage extends EPackage {
 	EAttribute getForkedToken_RemainingOffersCount();
 
 	/**
-	 * Returns the meta object for the attribute '{@link activitydiagram.ForkedToken#isBaseTokenIsWithdrawn <em>Base Token Is Withdrawn</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Base Token Is Withdrawn</em>'.
-	 * @see activitydiagram.ForkedToken#isBaseTokenIsWithdrawn()
-	 * @see #getForkedToken()
-	 * @generated
-	 */
-	EAttribute getForkedToken_BaseTokenIsWithdrawn();
-
-	/**
 	 * Returns the meta object for enum '{@link activitydiagram.IntegerCalculationOperator <em>Integer Calculation Operator</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3839,14 +3819,6 @@ public interface ActivitydiagramPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute FORKED_TOKEN__REMAINING_OFFERS_COUNT = eINSTANCE.getForkedToken_RemainingOffersCount();
-
-		/**
-		 * The meta object literal for the '<em><b>Base Token Is Withdrawn</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute FORKED_TOKEN__BASE_TOKEN_IS_WITHDRAWN = eINSTANCE.getForkedToken_BaseTokenIsWithdrawn();
 
 		/**
 		 * The meta object literal for the '{@link activitydiagram.IntegerCalculationOperator <em>Integer Calculation Operator</em>}' enum.

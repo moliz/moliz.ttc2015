@@ -13,7 +13,6 @@ package activitydiagram;
  * <ul>
  *   <li>{@link activitydiagram.ForkedToken#getBaseToken <em>Base Token</em>}</li>
  *   <li>{@link activitydiagram.ForkedToken#getRemainingOffersCount <em>Remaining Offers Count</em>}</li>
- *   <li>{@link activitydiagram.ForkedToken#isBaseTokenIsWithdrawn <em>Base Token Is Withdrawn</em>}</li>
  * </ul>
  * </p>
  *
@@ -72,32 +71,6 @@ public interface ForkedToken extends Token {
 	 * @see #getRemainingOffersCount()
 	 * @generated
 	 */
-	void setRemainingOffersCount(int value);
-
-	/**
-	 * Returns the value of the '<em><b>Base Token Is Withdrawn</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Base Token Is Withdrawn</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Base Token Is Withdrawn</em>' attribute.
-	 * @see #setBaseTokenIsWithdrawn(boolean)
-	 * @see activitydiagram.ActivitydiagramPackage#getForkedToken_BaseTokenIsWithdrawn()
-	 * @model required="true"
-	 * @generated
-	 */
-	boolean isBaseTokenIsWithdrawn();
-
-	/**
-	 * Sets the value of the '{@link activitydiagram.ForkedToken#isBaseTokenIsWithdrawn <em>Base Token Is Withdrawn</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Base Token Is Withdrawn</em>' attribute.
-	 * @see #isBaseTokenIsWithdrawn()
-	 * @generated
-	 */
-	void setBaseTokenIsWithdrawn(boolean value);	
+	void setRemainingOffersCount(int value);	
 
 } // ForkedToken
