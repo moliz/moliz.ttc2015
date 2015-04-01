@@ -1,1 +1,0 @@
-This repository provides the reference implementation for the TTC 2015 case "Model Execution"
