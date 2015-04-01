@@ -33,25 +33,25 @@ public class TestSuite {
 	private XtextResourceSet resourceSet = null;
 
 	@Before
-	public void initializeResourceSet() {
+	final public void initializeResourceSet() {
 		resourceSet = new XtextResourceSet();
 	}
 
 	@Before
-	public void setupGrammar() {
+	final public void setupGrammar() {
 		ActivityDiagramStandaloneSetup.doSetup();
 		ActivityDiagramInputStandaloneSetup.doSetup();
 	}
 
 	@Test
-	public void test1() {
+	final public void test1() {
 		Trace trace = executeActivity("model/test1.ad");
 		assertTrue(checkTotalExecutionOrder(trace, "initialNode1", "action1",
 				"finalNode1"));
 	}
 
 	@Test
-	public void test2() {
+	final public void test2() {
 		Trace trace = executeActivity("model/test2.ad");
 		assertTrue(checkPartialExecutionOrder(trace, "initialNode2",
 				"forkNode1", "action2", "joinNode1", "finalNode2"));
@@ -60,7 +60,7 @@ public class TestSuite {
 	}
 
 	@Test
-	public void test3() {
+	final public void test3() {
 		Trace trace = executeActivity("model/test3.ad");
 		assertTrue(checkTotalExecutionOrder(trace, "initialNode3",
 				"decisionNode1", "action4", "mergeNode1", "finalNode3"));
@@ -68,7 +68,7 @@ public class TestSuite {
 	}
 
 	@Test
-	public void test4() {
+	final public void test4() {
 		Trace trace = executeActivity("model/test4.ad");
 		assertTrue(checkTotalExecutionOrder(trace, "initialNode4", "action6",
 				"action7", "action8", "action9", "finalNode4"));
@@ -81,7 +81,7 @@ public class TestSuite {
 	}
 
 	@Test
-	public void test5() {
+	final public void test5() {
 		Trace trace = executeActivity("model/test5.ad", "model/test5.adinput");
 		assertTrue(checkTotalExecutionOrder(trace, "initialNode5", "action10",
 				"finalNode5"));
@@ -91,7 +91,7 @@ public class TestSuite {
 	}
 
 	@Test
-	public void test6_3() {
+	final public void test6_3() {
 		Trace trace = executeActivity("model/test6.ad", "model/test6_3.adinput");
 		assertTrue(checkTotalExecutionOrder(trace, "initialNode6", "a", "b",
 				"c", "d", "mergeE", "e", "decisionI", "f", "mergeFinal6",
@@ -108,7 +108,7 @@ public class TestSuite {
 	}
 
 	@Test
-	public void test6_2() {
+	final public void test6_2() {
 		Trace trace = executeActivity("model/test6.ad", "model/test6_2.adinput");
 		assertTrue(checkTotalExecutionOrder(trace, "initialNode6", "a", "b",
 				"c", "d", "mergeE", "e", "decisionI", "g", "h", "mergeFinal6",
@@ -124,7 +124,7 @@ public class TestSuite {
 	}
 
 	@Test
-	public void test6_1() {
+	final public void test6_1() {
 		Trace trace = executeActivity("model/test6.ad", "model/test6_1.adinput");
 
 		String[] expectedExecutionOrder = new String[105];
@@ -162,7 +162,7 @@ public class TestSuite {
 	}
 	
 	@Test
-	public void test7_false() {
+	final public void test7_false() {
 		Trace trace = executeActivity("model/test7.ad", "model/test7_false.adinput");
 		assertTrue(checkTotalExecutionOrder(trace, "initialNode7", "register", "decisionInternal",
 				"assignToProjectExternal", "mergeAuthorizePayment", "authorizePayment", "finalNode7"));
@@ -176,7 +176,7 @@ public class TestSuite {
 	}
 	
 	@Test
-	public void test7_true() {
+	final public void test7_true() {
 		Trace trace = executeActivity("model/test7.ad", "model/test7_true.adinput");
 		assertTrue(checkPartialExecutionOrder(trace, "initialNode7", "register", "decisionInternal",
 				"getWelcomePackage", "forkGetWelcomePackage", "joinManagerInterview", "managerInterview", "managerReport",
@@ -188,11 +188,12 @@ public class TestSuite {
 		assertFalse(checkNodeExecuted(trace, "assignToProjectExternal"));
 	}
 
-	private Trace executeActivity(String modelPath) {
+	
+	final protected Trace executeActivity(String modelPath) {
 		return executeActivity(modelPath, null);
 	}
 
-	private Trace executeActivity(String modelPath, String inputPath) {
+	protected Trace executeActivity(String modelPath, String inputPath) {
 		Activity activity = getActivity(modelPath);
 		List<InputValue> inputValues = getInputValues(inputPath);
 		activity.main(inputValues);
@@ -200,7 +201,7 @@ public class TestSuite {
 		return trace;
 	}
 
-	private Activity getActivity(String modelPath) {
+	final protected Activity getActivity(String modelPath) {
 		Resource resource = resourceSet.getResource(createFileURI(modelPath),
 				true);
 		EObject eObject = resource.getContents().get(0);
@@ -211,7 +212,7 @@ public class TestSuite {
 		return null;
 	}
 
-	private List<InputValue> getInputValues(String inputPath) {
+	final protected List<InputValue> getInputValues(String inputPath) {
 		List<InputValue> inputValues = new ArrayList<InputValue>();
 		if (inputPath != null) {
 			Resource resource = resourceSet.getResource(
@@ -225,15 +226,15 @@ public class TestSuite {
 		return inputValues;
 	}
 
-	private URI createFileURI(String path) {
+	final protected URI createFileURI(String path) {
 		return URI.createFileURI(createFile(path).getAbsolutePath());
 	}
 
-	private File createFile(String path) {
+	final protected File createFile(String path) {
 		return new File(path);
 	}
 
-	private boolean checkTotalExecutionOrder(Trace trace,
+	final protected boolean checkTotalExecutionOrder(Trace trace,
 			String... activityNodeNames) {
 		boolean result = true;
 		if (trace.getExecutedNodes().size() != activityNodeNames.length) {
@@ -251,7 +252,7 @@ public class TestSuite {
 		return result;
 	}
 
-	private boolean checkPartialExecutionOrder(Trace trace,
+	final protected boolean checkPartialExecutionOrder(Trace trace,
 			String... activityNodeNames) {
 		int[] orderIndexes = new int[activityNodeNames.length];
 		for (int i = 0; i < activityNodeNames.length; ++i) {
@@ -277,7 +278,7 @@ public class TestSuite {
 		return -1;
 	}
 
-	private boolean checkNodeExecuted(Trace trace, String string) {
+	final protected boolean checkNodeExecuted(Trace trace, String string) {
 		int orderIndex = getFirstOrderIndex(trace, string);
 		return orderIndex != -1;
 	}
@@ -334,23 +335,4 @@ public class TestSuite {
 		return activity;
 	}
 
-	// private boolean checkExecutionOrderOfTwoNodes(Trace trace, String
-	// predecessorActivityNodeName, String successorActivityNodeName) {
-	// int predecessorOrderIndex = -1;
-	// int successorOrderIndex = -1;
-	// for(int i=0;i<trace.getExecutedNodes().size();++i) {
-	// ActivityNode node = trace.getExecutedNodes().get(i);
-	// if (node.getName().equals(predecessorActivityNodeName)) {
-	// predecessorOrderIndex = i;
-	// }
-	// if (node.getName().equals(successorActivityNodeName)) {
-	// successorOrderIndex = i;
-	// }
-	// }
-	// if (predecessorOrderIndex == -1 || successorOrderIndex == -1) {
-	// return false;
-	// } else {
-	// return predecessorOrderIndex < successorOrderIndex;
-	// }
-	// }
 }

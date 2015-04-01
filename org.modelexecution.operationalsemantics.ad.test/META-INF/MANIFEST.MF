@@ -10,3 +10,4 @@ Require-Bundle: org.junit,
  org.eclipse.xtext.ecore;bundle-version="2.7.2",
  org.eclipse.emf;bundle-version="2.6.0",
  org.modelexecution.operationalsemantics.ad.input.grammar;bundle-version="1.0.0"
+Export-Package: org.modelexecution.operationalsemantics.ad.test
