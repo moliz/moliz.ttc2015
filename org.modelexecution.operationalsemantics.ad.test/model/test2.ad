@@ -4,7 +4,7 @@ activity Test2 {
 		fork forkNode1 in (edge3) out (edge4, edge5),
 		action action2 in (edge4) out (edge6),
 		action action3 in (edge5) out (edge7),
-		join joinNode1 in (edge7) out (edge8),
+		join joinNode1 in (edge6, edge7) out (edge8),
 		final finalNode2 in (edge8)
 	}
 	edges {
