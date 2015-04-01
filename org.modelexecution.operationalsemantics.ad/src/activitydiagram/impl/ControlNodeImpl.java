@@ -46,6 +46,7 @@ public abstract class ControlNodeImpl extends ActivityNodeImpl implements Contro
 
 	@Override
 	public void fire(List<Token> tokens) {
+		addTokens(tokens);
 		sendOffers(tokens);
 	}
 } //ControlNodeImpl

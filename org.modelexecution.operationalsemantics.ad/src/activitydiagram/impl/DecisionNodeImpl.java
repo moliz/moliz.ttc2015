@@ -61,6 +61,7 @@ public class DecisionNodeImpl extends ControlNodeImpl implements DecisionNode {
 		}
 		
 		if(selectedEdge != null) {
+			addTokens(tokens);
 			selectedEdge.sendOffer(tokens);
 		}
 	}

@@ -6,7 +6,9 @@ import activitydiagram.ActivitydiagramPackage;
 import activitydiagram.Offer;
 import activitydiagram.Token;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -133,6 +135,20 @@ public class OfferImpl extends MinimalEObjectImpl.Container implements Offer {
 	 */
 	@Override
 	public boolean hasTokens() {
+		removeWithdrawnTokens();
 		return getOfferedTokens().size() > 0;
+	}
+
+	/**
+	 * @generated NOT
+	 */
+	private void removeWithdrawnTokens() {
+		List<Token> tokensToBeRemoved = new ArrayList<Token>();
+		for(Token token : getOfferedTokens()) {
+			if (token.isWithdrawn()) {
+				tokensToBeRemoved.add(token);
+			}
+		}
+		this.getOfferedTokens().removeAll(tokensToBeRemoved);
 	}
 } //OfferImpl

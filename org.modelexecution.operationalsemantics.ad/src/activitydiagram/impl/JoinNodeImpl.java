@@ -40,7 +40,7 @@ public class JoinNodeImpl extends ControlNodeImpl implements JoinNode {
 	@Override
 	public boolean isReady() {
 		boolean ready = true;
-		for (ActivityEdge edge : incoming) {
+		for (ActivityEdge edge : getIncoming()) {
 			if (!edge.hasOffer())
 				ready = false;
 		}

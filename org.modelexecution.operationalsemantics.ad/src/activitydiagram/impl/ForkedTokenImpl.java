@@ -278,8 +278,8 @@ public class ForkedTokenImpl extends TokenImpl implements ForkedToken {
 	 */
 	@Override
 	public void withdraw() {
-		if(!baseTokenIsWithdrawn && !baseToken.isWithdrawn()) {
-			baseToken.withdraw();
+		if(!baseTokenIsWithdrawn && !getBaseToken().isWithdrawn()) {
+			getBaseToken().withdraw();
 			baseTokenIsWithdrawn = true;
 		}
 		if(remainingOffersCount > 0) {
