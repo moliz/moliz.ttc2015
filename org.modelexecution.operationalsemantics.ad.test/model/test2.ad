@@ -1,4 +1,4 @@
-activity Test2 {
+activity test2 {
 	nodes {
 		initial initialNode2 out (edge3),
 		fork forkNode1 in (edge3) out (edge4, edge5),

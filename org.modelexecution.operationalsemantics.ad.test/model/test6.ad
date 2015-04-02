@@ -1,54 +1,38 @@
-activity Test6 (int i) {
-	int value2 = 2,
-	bool iG2 = false,
-	bool iE2 = false,
-	bool iL2 = false,
-	int loop = 0,
-	int iterations = 13,
-	bool loopE13 = false,
-	bool loopL13 = false,
-	int value1 = 1
-	 
+activity test6 (bool internal) {
+	bool notinternal = false
+	
 	nodes {
-		initial initialNode6 out(edge22),
-		action a comp { iG2 = i > value2, iE2 = i == value2, iL2 = i < value2 } in(edge22) out(edge23),
-		action b in(edge23) out(edge24),
-		action c in(edge24) out(edge25),
-		action d in(edge25) out(edge26),
-		merge mergeE in(edge26, edge41) out(edge27),
-		action e in(edge27) out(edge28),
-		decision decisionI in(edge28) out(edge29, edge30, edge31),
-		action f in(edge29) out(edge32),
-		action g in(edge30) out(edge34),
-		action h in(edge34) out(edge35),
-		action i in(edge31) out(edge36),
-		action j comp { loopE13 = loop == iterations, loopL13 = loop < iterations} in(edge36) out(edge37),
-		decision decisionLoop in(edge37) out(edge38, edge39),
-		merge mergeFinal6 in(edge32, edge35, edge40) out(edge33),
-		action k in(edge38) out(edge40),
-		action l comp { loop = loop + value1 } in(edge39) out(edge41),
-		final finalNode6 in(edge33)
+		initial initialNode6 out(edge42),
+		action register comp {notinternal = !internal} in(edge42) out(edge43),
+		decision decisionInternal in(edge43) out(edge44, edge45),
+		action assignToProjectExternal in(edge44) out(edge56),
+		action getWelcomePackage in(edge45) out(edge46),
+		fork forkGetWelcomePackage in(edge46) out(edge47, edge48),
+		action assignToProject in(edge47) out(edge49),
+		action addToWebsite in(edge48) out(edge50),
+		join joinManagerInterview in(edge49, edge50) out(edge51),
+		action managerInterview in(edge51) out(edge52),
+		action managerReport in(edge52) out(edge53),
+		merge mergeAuthorizePayment in(edge53, edge56) out(edge54),
+		action authorizePayment in(edge54) out(edge55),
+		final finalNode6 in(edge55)
 	}
+	
 	edges {
-		flow edge22 from initialNode6 to a,
-		flow edge23 from a to b,
-		flow edge24 from b to c,
-		flow edge25 from c to d,
-		flow edge26 from d to mergeE,
-		flow edge27 from mergeE to e,
-		flow edge28 from e to decisionI,
-		flow edge29 from decisionI to f [iG2],
-		flow edge30 from decisionI to g [iE2],
-		flow edge31 from decisionI to i [iL2],
-		flow edge32 from f to mergeFinal6,
-		flow edge33 from mergeFinal6 to finalNode6,
-		flow edge34 from g to h,
-		flow edge35 from h to mergeFinal6, 
-		flow edge36 from i to j,
-		flow edge37 from j to decisionLoop,
-		flow edge38 from decisionLoop to k [loopE13],
-		flow edge39 from decisionLoop to l [loopL13],
-		flow edge40 from k to mergeFinal6,
-		flow edge41 from l to mergeE
+		flow edge42 from initialNode6 to register,
+		flow edge43 from register to decisionInternal,
+		flow edge44 from decisionInternal to assignToProjectExternal [notinternal],
+		flow edge45 from decisionInternal to getWelcomePackage [internal],
+		flow edge46 from getWelcomePackage to forGetWelcomePackage,
+		flow edge47 from forkGetWelcomePackage to assignToProject,
+		flow edge48 from forkGetWelcomePackage to addToWebsite,
+		flow edge49 from assignToProject to joinManagerInterview,
+		flow edge50 from addToWebsite to joinManagerInterview,
+		flow edge51 from joinManagerInterview to managerInterview,
+		flow edge52 from managerInterview to managerReport,
+		flow edge53 from managerReport to mergeAuthorizePayment,
+		flow edge54 from mergeAuthorizePayment to authorizePayment,
+		flow edge55 from authorizePayment to finalNode6,
+		flow edge56 from assignToProjectExternal to mergeAuthorizePayment
 	}
 }

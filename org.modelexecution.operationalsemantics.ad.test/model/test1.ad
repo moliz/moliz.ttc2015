@@ -1,4 +1,4 @@
-activity Test1 {
+activity test1 {
 	nodes {
 		initial initialNode1 out (edge1),
 		action action1 in (edge1) out (edge2),

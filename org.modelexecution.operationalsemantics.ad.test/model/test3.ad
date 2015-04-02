@@ -1,4 +1,4 @@
-activity Test3 {
+activity test3 {
 	bool var1 = true,
 	bool var2 = false
 	

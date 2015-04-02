@@ -4,7 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +17,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.resource.XtextResourceSet;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,17 +27,23 @@ import org.modelexecution.operationalsemantics.ActivityDiagramStandaloneSetup;
 import activitydiagram.Activity;
 import activitydiagram.ActivityNode;
 import activitydiagram.BooleanValue;
+import activitydiagram.BooleanVariable;
 import activitydiagram.Input;
 import activitydiagram.InputValue;
 import activitydiagram.IntegerValue;
+import activitydiagram.IntegerVariable;
 import activitydiagram.Trace;
 import activitydiagram.Value;
 import activitydiagram.Variable;
 
 public class TestSuite {
 
+	private static final Object LINE_BREAK = System
+			.getProperty("line.separator");
+	
 	private XtextResourceSet resourceSet = null;
-
+	private Trace trace = null;;
+	
 	@Before
 	final public void initializeResourceSet() {
 		resourceSet = new XtextResourceSet();
@@ -42,17 +54,42 @@ public class TestSuite {
 		ActivityDiagramStandaloneSetup.doSetup();
 		ActivityDiagramInputStandaloneSetup.doSetup();
 	}
+	
+	@After
+	final public void printTrace() {
+		writeToFile(trace);
+		reset();
+	}
+	
+	private void writeToFile(Trace trace) {
+		Activity activity = (Activity)trace.eContainer();
+		String text = printTrace(trace);
+		try {
+			Writer writer = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(new File("trace/" + activity.getName()
+							+ ".txt"))));
+			writer.write(text);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void reset() {
+		trace = null;
+	}
+	
 
 	@Test
 	final public void test1() {
-		Trace trace = executeActivity("model/test1.ad");
+		trace = executeActivity("model/test1.ad");
 		assertTrue(checkTotalExecutionOrder(trace, "initialNode1", "action1",
 				"finalNode1"));
 	}
 
 	@Test
 	final public void test2() {
-		Trace trace = executeActivity("model/test2.ad");
+		trace = executeActivity("model/test2.ad");
 		assertTrue(checkPartialExecutionOrder(trace, "initialNode2",
 				"forkNode1", "action2", "joinNode1", "finalNode2"));
 		assertTrue(checkPartialExecutionOrder(trace, "initialNode2",
@@ -61,7 +98,7 @@ public class TestSuite {
 
 	@Test
 	final public void test3() {
-		Trace trace = executeActivity("model/test3.ad");
+		trace = executeActivity("model/test3.ad");
 		assertTrue(checkTotalExecutionOrder(trace, "initialNode3",
 				"decisionNode1", "action4", "mergeNode1", "finalNode3"));
 		assertFalse(checkNodeExecuted(trace, "action5"));
@@ -69,7 +106,7 @@ public class TestSuite {
 
 	@Test
 	final public void test4() {
-		Trace trace = executeActivity("model/test4.ad");
+		trace = executeActivity("model/test4.ad");
 		assertTrue(checkTotalExecutionOrder(trace, "initialNode4", "action6",
 				"action7", "action8", "action9", "finalNode4"));
 		assertEquals(3, getIntegerVariableValue(trace, "var3"));
@@ -82,90 +119,19 @@ public class TestSuite {
 
 	@Test
 	final public void test5() {
-		Trace trace = executeActivity("model/test5.ad", "model/test5.adinput");
+		trace = executeActivity("model/test5.ad", "model/test5.adinput");
 		assertTrue(checkTotalExecutionOrder(trace, "initialNode5", "action10",
 				"finalNode5"));
 		assertEquals(10, getIntegerVariableValue(trace, "var9"));
 		assertEquals(5, getIntegerVariableValue(trace, "var10"));
 		assertEquals(15, getIntegerVariableValue(trace, "var11"));
 	}
-
-	@Test
-	final public void test6_3() {
-		Trace trace = executeActivity("model/test6.ad", "model/test6_3.adinput");
-		assertTrue(checkTotalExecutionOrder(trace, "initialNode6", "a", "b",
-				"c", "d", "mergeE", "e", "decisionI", "f", "mergeFinal6",
-				"finalNode6"));
-		assertFalse(checkNodeExecuted(trace, "g"));
-		assertFalse(checkNodeExecuted(trace, "h"));
-		assertFalse(checkNodeExecuted(trace, "i"));
-		assertFalse(checkNodeExecuted(trace, "j"));
-		assertFalse(checkNodeExecuted(trace, "k"));
-		assertFalse(checkNodeExecuted(trace, "l"));
-		assertFalse(checkNodeExecuted(trace, "decisionLoop"));
-
-		assertEquals(0, getIntegerVariableValue(trace, "loop"));
-	}
-
-	@Test
-	final public void test6_2() {
-		Trace trace = executeActivity("model/test6.ad", "model/test6_2.adinput");
-		assertTrue(checkTotalExecutionOrder(trace, "initialNode6", "a", "b",
-				"c", "d", "mergeE", "e", "decisionI", "g", "h", "mergeFinal6",
-				"finalNode6"));
-		assertFalse(checkNodeExecuted(trace, "f"));
-		assertFalse(checkNodeExecuted(trace, "i"));
-		assertFalse(checkNodeExecuted(trace, "j"));
-		assertFalse(checkNodeExecuted(trace, "k"));
-		assertFalse(checkNodeExecuted(trace, "l"));
-		assertFalse(checkNodeExecuted(trace, "decisionLoop"));
-
-		assertEquals(0, getIntegerVariableValue(trace, "loop"));
-	}
-
-	@Test
-	final public void test6_1() {
-		Trace trace = executeActivity("model/test6.ad", "model/test6_1.adinput");
-
-		String[] expectedExecutionOrder = new String[105];
-		int i = 0;
-		expectedExecutionOrder[i++] = "initialNode6";
-		expectedExecutionOrder[i++] = "a";
-		expectedExecutionOrder[i++] = "b";
-		expectedExecutionOrder[i++] = "c";
-		expectedExecutionOrder[i++] = "d";
-		for (int j = 0; j < 13; ++j) {
-			expectedExecutionOrder[i++] = "mergeE";
-			expectedExecutionOrder[i++] = "e";
-			expectedExecutionOrder[i++] = "decisionI";
-			expectedExecutionOrder[i++] = "i";
-			expectedExecutionOrder[i++] = "j";
-			expectedExecutionOrder[i++] = "decisionLoop";
-			expectedExecutionOrder[i++] = "l";
-		}
-		expectedExecutionOrder[i++] = "mergeE";
-		expectedExecutionOrder[i++] = "e";
-		expectedExecutionOrder[i++] = "decisionI";
-		expectedExecutionOrder[i++] = "i";
-		expectedExecutionOrder[i++] = "j";
-		expectedExecutionOrder[i++] = "decisionLoop";
-		expectedExecutionOrder[i++] = "k";
-		expectedExecutionOrder[i++] = "mergeFinal6";
-		expectedExecutionOrder[i++] = "finalNode6";
-
-		assertTrue(checkTotalExecutionOrder(trace, expectedExecutionOrder));
-		assertFalse(checkNodeExecuted(trace, "f"));
-		assertFalse(checkNodeExecuted(trace, "g"));
-		assertFalse(checkNodeExecuted(trace, "h"));
-
-		assertEquals(13, getIntegerVariableValue(trace, "loop"));
-	}
 	
 	@Test
-	final public void test7_false() {
-		Trace trace = executeActivity("model/test7.ad", "model/test7_false.adinput");
-		assertTrue(checkTotalExecutionOrder(trace, "initialNode7", "register", "decisionInternal",
-				"assignToProjectExternal", "mergeAuthorizePayment", "authorizePayment", "finalNode7"));
+	final public void test6_false() {
+		trace = executeActivity("model/test6.ad", "model/test6_false.adinput");
+		assertTrue(checkTotalExecutionOrder(trace, "initialNode6", "register", "decisionInternal",
+				"assignToProjectExternal", "mergeAuthorizePayment", "authorizePayment", "finalNode6"));
 		assertFalse(checkNodeExecuted(trace, "getWelcomePackage"));
 		assertFalse(checkNodeExecuted(trace, "forkGetWelcomePackage"));
 		assertFalse(checkNodeExecuted(trace, "assignToProject"));
@@ -176,18 +142,47 @@ public class TestSuite {
 	}
 	
 	@Test
-	final public void test7_true() {
-		Trace trace = executeActivity("model/test7.ad", "model/test7_true.adinput");
-		assertTrue(checkPartialExecutionOrder(trace, "initialNode7", "register", "decisionInternal",
+	final public void test6_true() {
+		trace = executeActivity("model/test6.ad", "model/test6_true.adinput");
+		assertTrue(checkPartialExecutionOrder(trace, "initialNode6", "register", "decisionInternal",
 				"getWelcomePackage", "forkGetWelcomePackage", "joinManagerInterview", "managerInterview", "managerReport",
-				"mergeAuthorizePayment", "authorizePayment", "finalNode7"));
+				"mergeAuthorizePayment", "authorizePayment", "finalNode6"));
 		assertTrue(checkPartialExecutionOrder(trace, "forkGetWelcomePackage", "assignToProject", "joinManagerInterview"));
 		assertTrue(checkPartialExecutionOrder(trace, "forkGetWelcomePackage", "addToWebsite", "joinManagerInterview"));
-		
 		
 		assertFalse(checkNodeExecuted(trace, "assignToProjectExternal"));
 	}
 
+	@Test
+	public void test_performance_variant1() {
+		trace = executeActivity("model/testperformance_variant1.ad");
+		assertEquals(1002, trace.getExecutedNodes().size());
+	}
+	
+	@Test
+	public void test_performance_variant2() {
+		trace = executeActivity("model/testperformance_variant2.ad");
+		assertEquals(1004, trace.getExecutedNodes().size());
+	}
+	
+	@Test
+	public void test_performance_variant3_1() {
+		trace = executeActivity("model/testperformance_variant3_1.ad");
+		Activity activity = (Activity)trace.eContainer();
+		for (Variable variable : activity.getLocals()) {
+			if (variable.getName().equals("one"))
+				continue;
+			assertEquals(10, ((IntegerValue)variable.getCurrentValue()).getValue());
+		}
+		assertEquals(1004, trace.getExecutedNodes().size());
+	}
+	
+	@Test
+	public void test_performance_variant3_2() {
+		trace = executeActivity("model/testperformance_variant3_2.ad", "model/testperformance_variant3_2.adinput");
+		assertEquals(141, getIntegerVariableValue(trace, "loop"));
+		assertEquals(1001, trace.getExecutedNodes().size());
+	}
 	
 	final protected Trace executeActivity(String modelPath) {
 		return executeActivity(modelPath, null);
@@ -283,7 +278,7 @@ public class TestSuite {
 		return orderIndex != -1;
 	}
 
-	private int getIntegerVariableValue(Trace trace, String variableName) {
+	final protected int getIntegerVariableValue(Trace trace, String variableName) {
 		Value currentValue = getVariableValue(trace, variableName);
 		if (currentValue instanceof IntegerValue) {
 			IntegerValue integerValue = (IntegerValue) currentValue;
@@ -335,4 +330,44 @@ public class TestSuite {
 		return activity;
 	}
 
+	final protected String printTrace(Trace trace) {
+		StringBuffer text = new StringBuffer();
+		for(ActivityNode node : trace.getExecutedNodes()) {
+			text.append(node.getName());
+			text.append(LINE_BREAK);
+		}
+		
+		Activity activity = (Activity)trace.eContainer();
+		for(Variable variable : activity.getLocals()) {
+			text.append(print(variable));
+			text.append(LINE_BREAK);
+		}
+		return text.toString();
+	}
+	
+	private String print(Variable variable) {
+		StringBuffer text = new StringBuffer();
+		if (variable instanceof IntegerVariable) {
+			text.append(print((IntegerVariable)variable));
+		} else if (variable instanceof BooleanVariable) {
+			text.append(print((BooleanVariable)variable));
+		}
+		return text.toString();
+	}
+	
+	private String print(IntegerVariable variable){
+		StringBuffer text = new StringBuffer();
+		text.append(variable.getName());
+		text.append(" = ");
+		text.append(((IntegerValue)variable.getCurrentValue()).getValue());
+		return text.toString();
+	}
+	
+	private String print(BooleanVariable variable){
+		StringBuffer text = new StringBuffer();
+		text.append(variable.getName());
+		text.append(" = ");
+		text.append(((BooleanValue)variable.getCurrentValue()).isValue());
+		return text.toString();
+	}
 }

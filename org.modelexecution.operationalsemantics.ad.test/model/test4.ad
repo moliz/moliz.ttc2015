@@ -1,4 +1,4 @@
-activity Test4 {
+activity test4 {
 	int var3 = 0,
 	int var4 = 1,
 	int var5 = 2,
