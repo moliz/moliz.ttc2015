@@ -41,7 +41,7 @@ public class TestSuite {
 	private static final Object LINE_BREAK = System
 			.getProperty("line.separator");
 	
-	private XtextResourceSet resourceSet = null;
+	protected XtextResourceSet resourceSet = null;
 	private Trace trace = null;;
 	
 	@Before
@@ -61,7 +61,7 @@ public class TestSuite {
 		reset();
 	}
 	
-	private void writeToFile(Trace trace) {
+	protected void writeToFile(Trace trace) {
 		Activity activity = (Activity)trace.eContainer();
 		String text = printTrace(trace);
 		try {
@@ -196,7 +196,7 @@ public class TestSuite {
 		return trace;
 	}
 
-	final protected Activity getActivity(String modelPath) {
+	protected Activity getActivity(String modelPath) {
 		Resource resource = resourceSet.getResource(createFileURI(modelPath),
 				true);
 		EObject eObject = resource.getContents().get(0);
@@ -209,16 +209,24 @@ public class TestSuite {
 
 	final protected List<InputValue> getInputValues(String inputPath) {
 		List<InputValue> inputValues = new ArrayList<InputValue>();
+		Input input = getInput(inputPath);
+		if (input != null) {
+			inputValues.addAll(input.getInputValues());
+		}		
+		return inputValues;
+	}
+	
+	protected Input getInput(String inputPath) {
+		Input input = null;
 		if (inputPath != null) {
 			Resource resource = resourceSet.getResource(
 					createFileURI(inputPath), true);
 			EObject eObject = resource.getContents().get(0);
 			if (eObject instanceof Input) {
-				Input input = (Input) eObject;
-				inputValues.addAll(input.getInputValues());
+				input = (Input) eObject;
 			}
 		}
-		return inputValues;
+		return input;
 	}
 
 	final protected URI createFileURI(String path) {
